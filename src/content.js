@@ -149,6 +149,8 @@ export const site = {
       { label: '小红书', href: '#' },
       { label: 'Instagram', href: '#' },
       { label: 'Bilibili', href: '#' },
+      { label: 'Telegram', href: 'https://t.me/' },
+      { label: 'Discord', href: 'https://discord.gg/' },
     ],
   },
 
