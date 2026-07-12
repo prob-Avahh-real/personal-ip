@@ -1,6 +1,6 @@
 # Avah 个人 IP 官网
 
-IT Girl / IT Woman 个人品牌站点：关于、作品集、制作过程 vlog、作品介绍 vlog，以及合作入口。
+IT Girl / IT Woman 个人品牌站点：关于、作品集、灵感取材、制作过程 vlog、作品介绍 vlog，以及合作入口。
 
 视觉方向：**墨黑（ink）+ 瓷白（porcelain）+ 香槟铬（champagne）**，中文优先，轻量双语点缀。
 
@@ -31,8 +31,8 @@ npm run dev
 - `hero` — 首屏标题、副文案、按钮
 - `about` — 人设段落
 - `works.portfolio` — 作品集入口（名称、简介、链接）
-- `works.series` — vlog 系列（`process` 制作过程 / `intro` 作品介绍），每条可加 `items`
-- `pillars.items` — 内容主张（默认：作品 / 过程 / 介绍）
+- `works.series` — 内容系列（`process` 制作过程 / `intro` 作品介绍 / `source` 灵感取材），每条可加 `items`
+- `pillars.items` — 内容主张（默认：作品 / 取材 / 过程 / 介绍）
 - `contact` — 邮箱与社交链接
 
 改完保存即可在开发模式下即时刷新。

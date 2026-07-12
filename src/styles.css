@@ -735,9 +735,16 @@ p {
   counter-reset: pillar;
 }
 
-@media (min-width: 800px) {
+@media (min-width: 720px) {
   .pillars-list {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 2.25rem;
+  }
+}
+
+@media (min-width: 1100px) {
+  .pillars-list {
+    grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
   }
 }
