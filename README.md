@@ -96,3 +96,11 @@ vercel --yes --prod     # 生产部署
 4. 证书由 Vercel 自动签发；生效后即可用该域名访问  
 
 当前步骤不强制购买域名；可先用 `*.vercel.app` 预览地址上线。
+
+### 备用：GitHub Pages
+
+仓库已配置 Actions 部署到 GitHub Pages（境外、无 ICP），地址：
+
+https://prob-avahh-real.github.io/personal-ip/
+
+推送 `main` 会自动更新。正式品牌域名仍建议用 Vercel Domains 绑定。
