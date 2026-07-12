@@ -1,15 +1,15 @@
 /* ============================================================
    Avah Personal IP — bottle forest + lacquer red
-   Understated luxury: deep emerald ground, restrained oxblood type
+   Understated luxury: lifted emerald/jade-ink ground, restrained oxblood type
    ============================================================ */
 
 :root {
-  /* Deep bottle / forest greens (ground) */
-  --ink-950: #07120e;
-  --ink-900: #0c1a14;
-  --ink-800: #13241c;
-  --ink-700: #1c3328;
-  --ink-600: #2a4536;
+  /* Forest / muted jade-ink greens (ground) — slightly brighter than near-black bottle */
+  --ink-950: #0a1813;
+  --ink-900: #11241c;
+  --ink-800: #1a3026;
+  --ink-700: #254034;
+  --ink-600: #345445;
   /* Soft dusty rose–lacquer (type) — not Christmas red */
   --porcelain: #d6a8ab;
   --porcelain-soft: #e2bcbe;
@@ -18,7 +18,7 @@
   --champagne: #9e444e;
   --champagne-bright: #c05a64;
   --champagne-deep: #6e2c34;
-  --ink: #0a1510;
+  --ink: #0d1c16;
   --text: var(--porcelain);
   --text-muted: var(--porcelain-muted);
   --accent: var(--champagne);
@@ -278,9 +278,9 @@ p {
   align-items: end;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 70% 55% at 72% 28%, #1a3228 0%, transparent 58%),
-    radial-gradient(ellipse 48% 42% at 10% 88%, #1c2418 0%, transparent 52%),
-    linear-gradient(165deg, #06110c 0%, var(--ink-900) 46%, #040d0a 100%);
+    radial-gradient(ellipse 70% 55% at 72% 28%, #214038 0%, transparent 58%),
+    radial-gradient(ellipse 48% 42% at 10% 88%, #243028 0%, transparent 52%),
+    linear-gradient(165deg, #0a1712 0%, var(--ink-900) 46%, #08140f 100%);
 }
 
 .hero-visual {
@@ -729,7 +729,7 @@ p {
 
 .pillars {
   background:
-    radial-gradient(ellipse 55% 45% at 100% 0%, #1e2e24 0%, transparent 55%),
+    radial-gradient(ellipse 55% 45% at 100% 0%, #263a30 0%, transparent 55%),
     var(--ink-900);
 }
 
@@ -787,7 +787,7 @@ p {
 /* Contact */
 
 .contact {
-  background: linear-gradient(180deg, var(--ink-950) 0%, #040c09 100%);
+  background: linear-gradient(180deg, var(--ink-950) 0%, #08140f 100%);
 }
 
 .contact-body {
