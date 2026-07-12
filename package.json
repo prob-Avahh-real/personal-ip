@@ -1,0 +1,16 @@
+{
+  "name": "personal-ip",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Avah 个人 IP 官网 — IT Girl 个人品牌",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}
