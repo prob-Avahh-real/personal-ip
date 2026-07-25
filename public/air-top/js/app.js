@@ -46,9 +46,23 @@ var PHYSICS = {
   maxRpm: 2400,
   whipBoost: 280,
   tapBoost: 120,
-  fallLean: 28,
+  fallLean: 30,
   leanStep: 4.5,
-  uprightRate: 0.12
+  /** Moment factor for L ≈ Iω (scaled by skin mass) */
+  inertiaBase: 1,
+  Lmin: 0.08,
+  /** RPM where gyroscopic restore roughly balances gravity tip-out */
+  stabilityRpm: 800,
+  /** Gravity torque scale (τ ∝ m sinθ) */
+  gravityTorque: 2.4,
+  /** Ω ≈ gain · τ / L — visible azimuth sweep when leaned */
+  precessionGain: 1.15,
+  /** Radial restore stiffness ∝ L/Lref */
+  gyroStiffness: 3.6,
+  /** Outward tip acceleration when L is small */
+  tipGain: 55,
+  /** Lean-rate damping (nutation decay) */
+  nutationDamp: 0.08
 };
 
 // src/physics.js
@@ -67,6 +81,8 @@ var TopPhysics = class {
     this.angle = 0;
     this.leanX = 0;
     this.leanY = 0;
+    this.leanVX = 0;
+    this.leanVY = 0;
     this.wobble = 0;
     this.alive = false;
     this.fallen = false;
@@ -92,6 +108,8 @@ var TopPhysics = class {
     this.rpm = Math.min(PHYSICS.maxRpm, this.rpm + boost);
     this.leanX *= 0.72;
     this.leanY *= 0.72;
+    this.leanVX *= 0.5;
+    this.leanVY *= 0.5;
     this.alive = true;
     this.maxRpm = Math.max(this.maxRpm, this.rpm);
   }
@@ -100,12 +118,16 @@ var TopPhysics = class {
     this.alive = true;
     this.leanX = 0;
     this.leanY = 0;
+    this.leanVX = 0;
+    this.leanVY = 0;
     this.wobble = 0;
     this.spinTime = 0;
   }
   upright() {
     this.leanX = 0;
     this.leanY = 0;
+    this.leanVX = 0;
+    this.leanVY = 0;
     this.wobble *= 0.3;
     if (this.fallen && this.rpm > PHYSICS.minRpmAlive) {
       this.fallen = false;
@@ -116,6 +138,8 @@ var TopPhysics = class {
     if (this.fallen) return;
     this.leanX = clamp(this.leanX + dx, -40, 40);
     this.leanY = clamp(this.leanY + dy, -40, 40);
+    this.leanVX += dx * 2.2;
+    this.leanVY += dy * 2.2;
   }
   /**
    * @param {number} dt seconds
@@ -129,27 +153,63 @@ var TopPhysics = class {
     if (this.rpm > 1) {
       this.alive = true;
       this.spinTime += dt;
-      const spinRate = this.rpm / 60 * Math.PI * 2;
-      this.angle += spinRate * dt;
-      const leanMag = Math.hypot(this.leanX, this.leanY);
-      const leanDrag = 1 - Math.min(0.04, leanMag * 8e-4);
+      const omega = this.rpm / 60 * Math.PI * 2;
+      this.angle += omega * dt;
+      const I = PHYSICS.inertiaBase * this.mass;
+      const L = Math.max(PHYSICS.Lmin, I * omega);
+      let leanMag = Math.hypot(this.leanX, this.leanY);
+      const theta = leanMag / 40 * (Math.PI * 0.3);
+      const sinT = Math.sin(Math.max(theta, 2e-3));
+      const leanDrag = 1 - Math.min(0.05, leanMag * 1e-3);
       this.rpm *= Math.pow(this.friction * leanDrag, dt * 60);
-      const stability = Math.min(1, this.rpm / 800);
-      this.leanX *= 1 - PHYSICS.uprightRate * stability * dt * 8;
-      this.leanY *= 1 - PHYSICS.uprightRate * stability * dt * 8;
-      const wobbleTarget = leanMag / 40 * (1 - stability) + (1 - Math.min(1, this.rpm / 300)) * 0.35;
-      this.wobble += (wobbleTarget - this.wobble) * Math.min(1, dt * 4);
+      const tau = PHYSICS.gravityTorque * this.mass * sinT;
+      const Omega = PHYSICS.precessionGain * tau / L;
+      if (leanMag > 0.2) {
+        const c = Math.cos(Omega * dt);
+        const s = Math.sin(Omega * dt);
+        const lx = this.leanX;
+        const ly = this.leanY;
+        this.leanX = lx * c - ly * s;
+        this.leanY = lx * s + ly * c;
+        leanMag = Math.hypot(this.leanX, this.leanY);
+      }
+      const Lref = I * (PHYSICS.stabilityRpm / 60 * Math.PI * 2);
+      const Lratio = L / Lref;
+      const gyro = PHYSICS.gyroStiffness * Math.min(2.2, Lratio);
+      const tipOut = PHYSICS.tipGain * this.mass * sinT / Math.max(0.18, Lratio);
+      let ux = 0;
+      let uy = 0;
+      if (leanMag > 0.08) {
+        ux = this.leanX / leanMag;
+        uy = this.leanY / leanMag;
+      } else if (this.rpm < PHYSICS.stabilityRpm * 0.55) {
+        ux = Math.cos(this.angle * 0.37);
+        uy = Math.sin(this.angle * 0.37);
+      }
+      this.leanVX += (-this.leanX * gyro + ux * tipOut) * dt;
+      this.leanVY += (-this.leanY * gyro + uy * tipOut) * dt;
+      const damp = Math.pow(1 - PHYSICS.nutationDamp, dt * 60);
+      this.leanVX *= damp;
+      this.leanVY *= damp;
+      this.leanX = clamp(this.leanX + this.leanVX * dt, -40, 40);
+      this.leanY = clamp(this.leanY + this.leanVY * dt, -40, 40);
+      leanMag = Math.hypot(this.leanX, this.leanY);
+      const nutation = Math.min(1, Math.hypot(this.leanVX, this.leanVY) / 80);
+      const wobbleTarget = nutation * 0.65 + leanMag / 40 * (1 - Math.min(1, Lratio)) * 0.55;
+      this.wobble += (wobbleTarget - this.wobble) * Math.min(1, dt * 5);
       this.maxRpm = Math.max(this.maxRpm, this.rpm);
-      if (this.rpm < PHYSICS.minRpmAlive && leanMag > PHYSICS.fallLean * 0.55) {
+      if (this.rpm < PHYSICS.minRpmAlive && leanMag > PHYSICS.fallLean * 0.5) {
         this.fall();
-      } else if (this.rpm < PHYSICS.minRpmAlive * 0.5) {
+      } else if (this.rpm < PHYSICS.minRpmAlive * 0.45) {
         this.fall();
-      } else if (leanMag > PHYSICS.fallLean && this.rpm < 500) {
+      } else if (leanMag > PHYSICS.fallLean && this.rpm < PHYSICS.stabilityRpm * 0.65) {
         this.fall();
       }
     } else {
       this.rpm = 0;
       this.alive = false;
+      this.leanVX *= 0.9;
+      this.leanVY *= 0.9;
       this.wobble *= 0.95;
     }
     return this.snapshot();
@@ -158,6 +218,8 @@ var TopPhysics = class {
     if (this.fallen) return;
     this.fallen = true;
     this.alive = false;
+    this.leanVX = 0;
+    this.leanVY = 0;
     this.lastFallenAt = Date.now();
   }
   snapshot() {
@@ -762,31 +824,38 @@ function renderHud(snap) {
   $("status").textContent = snap.fallen ? "\u5012\u4E0B\u4E86" : snap.alive ? "\u65CB\u8F6C\u4E2D" : "\u5F85\u547D";
   $("status").dataset.state = snap.fallen ? "fallen" : snap.alive ? "spin" : "idle";
   const topEl = $("top-visual");
+  const spinEl = $("top-spin");
   const shadow = $("shadow");
   const leanX = snap.leanX;
   const leanY = snap.leanY;
-  const wobble = snap.wobble * 8;
-  const rot = snap.angle * 180 / Math.PI;
-  const tilt = Math.min(32, snap.leanMag * 0.9);
+  const wobble = snap.wobble * 6;
+  const spinDeg = snap.angle * 180 / Math.PI;
+  const azimuth = Math.atan2(leanX, leanY) * 180 / Math.PI;
+  const tilt = Math.min(48, snap.leanMag * 1.15);
   const scale = snap.fallen ? 0.92 : 1;
   if (snap.fallen) {
-    topEl.style.transform = `translate(${leanX * 1.2}px, 28px) rotate(${45 + leanX}deg) scale(${scale})`;
     topEl.classList.add("fallen");
+    topEl.style.transform = `
+      translate(${leanX * 1.1}px, 30px)
+      rotateX(78deg)
+      rotateZ(${35 + leanX * 0.8}deg)
+      scale(${scale})
+    `;
+    if (spinEl) spinEl.style.transform = `rotateY(${spinDeg}deg)`;
   } else {
     topEl.classList.remove("fallen");
     topEl.style.transform = `
-      translate(${leanX * 0.6 + Math.sin(snap.angle * 3) * wobble * 0.15}px, ${leanY * 0.15}px)
-      rotateX(${12 + tilt * 0.3}deg)
-      rotateZ(${rot}deg)
-      rotateY(${leanX * 0.35}deg)
+      translate(${leanX * 0.55 + Math.sin(snap.angle * 2.2) * wobble * 0.12}px, ${4 + leanY * 0.12}px)
+      rotateX(${14}deg)
+      rotateZ(${azimuth}deg)
+      rotateX(${tilt}deg)
       scale(${scale})
     `;
+    if (spinEl) {
+      spinEl.style.transform = `rotateY(${spinDeg}deg)`;
+    }
   }
-  const spinBody = $("top-body");
-  if (spinBody) {
-    spinBody.style.setProperty("--spin", `${rot}deg`);
-  }
-  shadow.style.transform = `translateX(${leanX * 0.9}px) scale(${1 + snap.leanMag * 8e-3}, ${0.55 + snap.wobble * 0.2})`;
+  shadow.style.transform = `translateX(${leanX * 0.95}px) scale(${1 + snap.leanMag * 0.01}, ${0.55 + snap.wobble * 0.22})`;
   shadow.style.opacity = String(0.25 + Math.min(0.45, snap.rpm / 3e3));
   const rpmBar = $("rpm-bar");
   if (rpmBar) {

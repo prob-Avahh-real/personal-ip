@@ -222,13 +222,14 @@
       pointer-events: none;
     }
     #top-visual {
-      width: 42%;
-      height: 58%;
+      width: 46%;
+      height: 62%;
       position: relative;
       transform-style: preserve-3d;
-      transform-origin: 50% 85%;
+      transform-origin: 50% 92%;
       will-change: transform;
       transition: filter 0.2s;
+      perspective: 640px;
     }
     #top-visual.whip {
       animation: whipPulse 0.28s ease-out;
@@ -236,52 +237,85 @@
     #top-visual.fallen {
       filter: saturate(0.7) brightness(0.85);
     }
-    #top-body {
+    /* Spin assembly — rotates about local Y (symmetry axis through tip) */
+    #top-spin {
       position: absolute;
       inset: 0;
+      transform-style: preserve-3d;
+      transform-origin: 50% 88%;
+      will-change: transform;
+    }
+    .top3d-ring,
+    .top3d-tip,
+    .top3d-stem {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform-style: preserve-3d;
+      pointer-events: none;
+    }
+    .top3d-stem {
+      width: 10%;
+      height: 22%;
+      margin-left: -5%;
+      margin-top: -42%;
+      border-radius: 40% 40% 28% 28%;
+      background: linear-gradient(180deg, #f2eee8, color-mix(in srgb, var(--accent) 42%, #555));
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+      transform: translateZ(2px);
+    }
+    .top3d-ring {
+      border-radius: 50%;
       background:
         conic-gradient(
-          from var(--spin, 0deg),
-          color-mix(in srgb, var(--accent) 88%, #fff) 0deg,
-          color-mix(in srgb, var(--accent) 55%, #1a1010) 90deg,
-          color-mix(in srgb, var(--accent) 95%, #fff) 180deg,
-          color-mix(in srgb, var(--accent) 40%, #0a0808) 270deg,
-          color-mix(in srgb, var(--accent) 88%, #fff) 360deg
+          from 0deg,
+          color-mix(in srgb, var(--accent) 90%, #fff) 0deg,
+          color-mix(in srgb, var(--accent) 50%, #141010) 90deg,
+          color-mix(in srgb, var(--accent) 96%, #fff) 180deg,
+          color-mix(in srgb, var(--accent) 38%, #0a0808) 270deg,
+          color-mix(in srgb, var(--accent) 90%, #fff) 360deg
         );
-      clip-path: polygon(50% 0%, 78% 38%, 68% 100%, 32% 100%, 22% 38%);
       box-shadow:
-        0 12px 28px rgba(0, 0, 0, 0.45),
-        inset 0 0 20px rgba(255, 255, 255, 0.12);
+        0 10px 22px rgba(0, 0, 0, 0.4),
+        inset 0 0 14px rgba(255, 255, 255, 0.14);
+      /* Flatten into disks along the spin axis */
+      transform: translate(-50%, -50%) rotateX(72deg) translateZ(var(--z, 0px));
     }
-    #top-body::before {
-      content: "";
-      position: absolute;
-      left: 42%;
-      top: 8%;
-      width: 16%;
-      height: 22%;
-      border-radius: 40% 40% 30% 30%;
-      background: linear-gradient(180deg, #f4f0ea, color-mix(in srgb, var(--accent) 40%, #666));
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    .top3d-crown {
+      width: 34%;
+      height: 34%;
+      --z: 28px;
+      opacity: 0.95;
     }
-    #top-body::after {
-      content: "";
-      position: absolute;
-      left: 46%;
-      bottom: -2%;
-      width: 8%;
-      height: 10%;
+    .top3d-disk {
+      width: 78%;
+      height: 78%;
+      --z: 10px;
+    }
+    .top3d-belly {
+      width: 52%;
+      height: 52%;
+      --z: -8px;
+      filter: brightness(0.92);
+    }
+    .top3d-tip {
+      width: 12%;
+      height: 12%;
+      margin-left: -6%;
+      margin-top: 34%;
       border-radius: 50%;
-      background: #2a2220;
+      background: radial-gradient(circle at 35% 30%, #5a5048, #1a1614 70%);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+      transform: translateZ(-18px);
     }
-    body[data-top="neon"] #top-body {
+    body[data-top="neon"] .top3d-ring {
       box-shadow:
-        0 0 24px color-mix(in srgb, var(--accent) 45%, transparent),
-        0 12px 28px rgba(0, 0, 0, 0.4),
-        inset 0 0 20px rgba(255, 255, 255, 0.15);
+        0 0 22px color-mix(in srgb, var(--accent) 50%, transparent),
+        0 10px 22px rgba(0, 0, 0, 0.4),
+        inset 0 0 14px rgba(255, 255, 255, 0.16);
     }
-    body[data-top="glass"] #top-body {
-      opacity: 0.92;
+    body[data-top="glass"] .top3d-ring {
+      opacity: 0.9;
       filter: saturate(1.15);
     }
 
@@ -454,7 +488,13 @@
     <div class="floor" aria-hidden="true">
       <div id="shadow"></div>
       <div id="top-visual">
-        <div id="top-body"></div>
+        <div id="top-spin">
+          <div class="top3d-stem"></div>
+          <div class="top3d-ring top3d-crown"></div>
+          <div class="top3d-ring top3d-disk"></div>
+          <div class="top3d-ring top3d-belly"></div>
+          <div class="top3d-tip"></div>
+        </div>
       </div>
     </div>
   </main>
@@ -494,7 +534,7 @@
       </svg>
     </button>
   </div>
-  <p class="help">戒指左右调倾角 · 上下换款 · 手杖挥动抽打 · 敲击点地<br>舞台左右拖动调倾 · 空格抽打 · T 点地 · R 扶正 · M 静音</p>
+  <p class="help">转速越高角动量越大，倾角会进动而非立刻倒下 · 戒指左右调倾 · 手杖抽打/点地<br>舞台拖动调倾 · 空格抽打 · T 点地 · R 扶正 · M 静音</p>
 
   <div id="toast" role="status"></div>
   <script type="module" src="./js/app.js"></script>
