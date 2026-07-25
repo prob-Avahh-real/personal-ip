@@ -1,6 +1,6 @@
 /* ============================================================
-   Avah Personal IP — peacock green + lacquer red
-   Understated luxury: deep teal-peacock ground, restrained oxblood type
+   Avah Personal IP — peacock green + Chinese lacquer red
+   Ground: peacock teal · type: dry rose · accent: lacquer · hover: garnet
    ============================================================ */
 
 :root {
@@ -10,14 +10,14 @@
   --ink-800: #143d38;
   --ink-700: #1c524a;
   --ink-600: #28665c;
-  /* Soft dusty rose–lacquer (type) — not Christmas red */
+  /* 干玫瑰 body type */
   --porcelain: #d6a8ab;
   --porcelain-soft: #e2bcbe;
   --porcelain-muted: #a0787c;
-  /* Restrained oxblood / garnet accents */
-  --champagne: #9e444e;
+  /* 中国漆红 accent · 石榴石 hover */
+  --champagne: #c23a2b;
   --champagne-bright: #c05a64;
-  --champagne-deep: #6e2c34;
+  --champagne-deep: #8e2a22;
   --ink: #0a221e;
   --text: var(--porcelain);
   --text-muted: var(--porcelain-muted);
@@ -305,7 +305,7 @@ p {
   right: -8%;
   top: 8%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(158, 68, 78, 0.14) 0%, transparent 68%);
+  background: radial-gradient(circle, rgba(194, 58, 43, 0.14) 0%, transparent 68%);
   animation: glow-breathe 8s ease-in-out infinite;
 }
 
