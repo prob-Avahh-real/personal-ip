@@ -747,8 +747,12 @@ function renderChrome() {
       ${t.label}
     </button>`
   ).join("");
-  $("mute-btn").classList.toggle("on", state.muted);
-  $("mute-btn").textContent = state.muted ? "\u5DF2\u9759\u97F3" : "\u9759\u97F3";
+  const muteBtn = $("mute-btn");
+  muteBtn.classList.toggle("on", state.muted);
+  const muteLabel = state.muted ? "\u5DF2\u9759\u97F3" : "\u9759\u97F3";
+  muteBtn.setAttribute("aria-label", muteLabel);
+  muteBtn.dataset.tip = muteLabel;
+  muteBtn.title = muteLabel;
   $("best-time").textContent = formatTime(Math.max(state.bestTime, state.sessionBest));
 }
 function renderHud(snap) {
