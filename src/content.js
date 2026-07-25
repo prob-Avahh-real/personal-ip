@@ -5,7 +5,7 @@
 export const site = {
   brand: 'Avah',
   brandZh: 'IT Girl',
-  title: 'Avah — IT Girl 个人品牌',
+  title: 'Avah--IT Girl',
   description:
     'Avah：审美驱动的数字时代女性。作品集、灵感取材、制作过程与作品介绍，持续更新。',
 
