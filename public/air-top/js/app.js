@@ -842,17 +842,18 @@ function renderHud(snap) {
   if (snap.fallen) {
     topEl.classList.add("fallen");
     topEl.style.transform = `
-      translate(${leanX * 1.1}px, 30px)
-      rotateX(78deg)
-      rotateZ(${35 + leanX * 0.8}deg)
+      translate(${leanX * 1.1}px, 36px)
+      rotateX(20deg)
+      rotateZ(${azimuth}deg)
+      rotateX(${72 + leanX * 0.15}deg)
       scale(${scale})
     `;
     if (spinEl) spinEl.style.transform = `rotateY(${spinDeg}deg)`;
   } else {
     topEl.classList.remove("fallen");
     topEl.style.transform = `
-      translate(${leanX * 0.55 + Math.sin(snap.angle * 2.2) * wobble * 0.12}px, ${4 + leanY * 0.12}px)
-      rotateX(${14}deg)
+      translate(${leanX * 0.55 + Math.sin(snap.angle * 2.2) * wobble * 0.12}px, ${2 + leanY * 0.1}px)
+      rotateX(20deg)
       rotateZ(${azimuth}deg)
       rotateX(${tilt}deg)
       scale(${scale})

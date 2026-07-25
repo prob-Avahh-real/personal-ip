@@ -207,7 +207,7 @@
     .floor {
       position: relative;
       width: min(280px, 78vw);
-      height: min(220px, 62vw);
+      height: min(240px, 68vw);
       display: grid;
       place-items: end center;
       margin: 8px 0;
@@ -216,10 +216,10 @@
     }
     #shadow {
       position: absolute;
-      bottom: 18%;
+      bottom: 10%;
       left: 50%;
       width: 46%;
-      height: 18%;
+      height: 16%;
       margin-left: -23%;
       border-radius: 50%;
       background: radial-gradient(ellipse, rgba(0,0,0,0.55), transparent 70%);
@@ -228,14 +228,15 @@
       pointer-events: none;
     }
     #top-visual {
-      width: 46%;
-      height: 62%;
+      width: 52%;
+      height: 78%;
       position: relative;
       transform-style: preserve-3d;
-      transform-origin: 50% 92%;
+      /* Tip contact point — upright spin origin */
+      transform-origin: 50% 88%;
       will-change: transform;
       transition: filter 0.2s;
-      perspective: 640px;
+      perspective: 720px;
       pointer-events: none;
     }
     #top-visual.whip {
@@ -244,7 +245,7 @@
     #top-visual.fallen {
       filter: saturate(0.7) brightness(0.85);
     }
-    /* Spin assembly — rotates about local Y (symmetry axis through tip) */
+    /* Spin assembly — rotateY about vertical symmetry axis through tip */
     #top-spin {
       position: absolute;
       inset: 0;
@@ -262,16 +263,18 @@
       transform-style: preserve-3d;
       pointer-events: none;
     }
+    /* Vertical stem standing above tip */
     .top3d-stem {
-      width: 10%;
-      height: 22%;
-      margin-left: -5%;
-      margin-top: -42%;
-      border-radius: 40% 40% 28% 28%;
+      width: 11%;
+      height: 28%;
+      margin-left: -5.5%;
+      top: 18%;
+      border-radius: 42% 42% 30% 30%;
       background: linear-gradient(180deg, #f2eee8, color-mix(in srgb, var(--accent) 42%, #555));
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-      transform: translateZ(2px);
+      transform: translateY(-42%);
     }
+    /* Horizontal cross-section disks stacked along Y (not Z “horizon”) */
     .top3d-ring {
       border-radius: 50%;
       background:
@@ -284,42 +287,41 @@
           color-mix(in srgb, var(--accent) 90%, #fff) 360deg
         );
       box-shadow:
-        0 10px 22px rgba(0, 0, 0, 0.4),
+        0 8px 18px rgba(0, 0, 0, 0.4),
         inset 0 0 14px rgba(255, 255, 255, 0.14);
-      /* Flatten into disks along the spin axis */
-      transform: translate(-50%, -50%) rotateX(72deg) translateZ(var(--z, 0px));
+      transform: translate(-50%, -50%) translateY(var(--y, 0px)) rotateX(90deg);
     }
     .top3d-crown {
-      width: 34%;
-      height: 34%;
-      --z: 28px;
-      opacity: 0.95;
+      width: 36%;
+      height: 36%;
+      --y: -52px;
+      opacity: 0.96;
     }
     .top3d-disk {
-      width: 78%;
-      height: 78%;
-      --z: 10px;
+      width: 88%;
+      height: 88%;
+      --y: -12px;
     }
     .top3d-belly {
-      width: 52%;
-      height: 52%;
-      --z: -8px;
+      width: 56%;
+      height: 56%;
+      --y: 28px;
       filter: brightness(0.92);
     }
     .top3d-tip {
-      width: 12%;
-      height: 12%;
-      margin-left: -6%;
-      margin-top: 34%;
+      width: 14%;
+      height: 14%;
+      margin-left: -7%;
+      top: 78%;
       border-radius: 50%;
       background: radial-gradient(circle at 35% 30%, #5a5048, #1a1614 70%);
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-      transform: translateZ(-18px);
+      transform: translateY(-20%);
     }
     body[data-top="neon"] .top3d-ring {
       box-shadow:
         0 0 22px color-mix(in srgb, var(--accent) 50%, transparent),
-        0 10px 22px rgba(0, 0, 0, 0.4),
+        0 8px 18px rgba(0, 0, 0, 0.4),
         inset 0 0 14px rgba(255, 255, 255, 0.16);
     }
     body[data-top="glass"] .top3d-ring {
