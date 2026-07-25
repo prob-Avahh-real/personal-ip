@@ -803,12 +803,18 @@ function renderChrome() {
   $("top-name").textContent = top.label;
   $("top-hint").textContent = top.description;
   const tabs = $("top-tabs");
-  tabs.innerHTML = TOPS.map(
-    (t, i) => `
-    <button type="button" class="top-tab ${i === state.topIndex ? "active" : ""}" data-i="${i}">
-      ${t.label}
-    </button>`
-  ).join("");
+  if (!tabs.dataset.ready) {
+    tabs.innerHTML = TOPS.map(
+      (t, i) => `<button type="button" class="top-tab" data-i="${i}" aria-pressed="false">${t.label}</button>`
+    ).join("");
+    tabs.dataset.ready = "1";
+  }
+  tabs.querySelectorAll(".top-tab").forEach((btn) => {
+    const i = Number(btn.dataset.i);
+    const on = i === state.topIndex;
+    btn.classList.toggle("active", on);
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
+  });
   const muteBtn = $("mute-btn");
   muteBtn.classList.toggle("on", state.muted);
   const muteLabel = state.muted ? "\u5DF2\u9759\u97F3" : "\u9759\u97F3";
@@ -939,8 +945,11 @@ var wearable = new WearableInput({
 function bindUi() {
   $("top-tabs").addEventListener("click", (e) => {
     const btn = e.target.closest(".top-tab");
-    if (!btn) return;
-    selectTop(Number(btn.dataset.i));
+    if (!btn || !("i" in btn.dataset)) return;
+    const i = Number(btn.dataset.i);
+    if (!Number.isFinite(i) || i === state.topIndex) return;
+    e.preventDefault();
+    selectTop(i);
   });
   $("whip-btn").addEventListener("click", () => doWhip({ velocity: 1 }));
   $("tap-btn").addEventListener("click", () => doTap({ velocity: 0.95 }));

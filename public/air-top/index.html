@@ -97,6 +97,8 @@
     }
 
     .top-tabs {
+      position: relative;
+      z-index: 20;
       display: flex;
       gap: 6px;
       margin: 8px 0 10px;
@@ -174,7 +176,9 @@
       align-items: center;
       justify-content: center;
       position: relative;
+      z-index: 1;
       min-height: 0;
+      overflow: hidden;
       touch-action: none;
       cursor: grab;
     }
@@ -207,6 +211,8 @@
       display: grid;
       place-items: end center;
       margin: 8px 0;
+      /* 3D layers must not steal clicks from tabs / controls */
+      pointer-events: none;
     }
     #shadow {
       position: absolute;
@@ -230,6 +236,7 @@
       will-change: transform;
       transition: filter 0.2s;
       perspective: 640px;
+      pointer-events: none;
     }
     #top-visual.whip {
       animation: whipPulse 0.28s ease-out;
@@ -244,6 +251,7 @@
       transform-style: preserve-3d;
       transform-origin: 50% 88%;
       will-change: transform;
+      pointer-events: none;
     }
     .top3d-ring,
     .top3d-tip,
@@ -320,6 +328,8 @@
     }
 
     .controls {
+      position: relative;
+      z-index: 20;
       display: grid;
       grid-template-columns: 1fr 1.4fr 1fr 0.9fr;
       gap: 8px;
