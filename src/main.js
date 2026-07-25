@@ -44,12 +44,19 @@ function renderAbout() {
     .join('');
 }
 
+function linkAttrs(href, { external = false } = {}) {
+  if (href === '#' || href.startsWith('#')) return '';
+  const isExternal = external || /^https?:\/\//i.test(href);
+  if (!isExternal) return '';
+  return ' target="_blank" rel="noopener noreferrer"';
+}
+
 function renderVlogItems(items) {
   return items
     .map(
       (item) => `
       <li>
-        <a class="vlog-item" href="${item.href}">
+        <a class="vlog-item" href="${item.href}"${linkAttrs(item.href, item)}>
           <span class="vlog-title">${item.title}</span>
           <span class="vlog-note">${item.note}</span>
         </a>
@@ -80,7 +87,7 @@ function renderWorks() {
     .join('');
 
   $('[data-works-body]').innerHTML = `
-    <a class="portfolio-block" href="${portfolio.href}">
+    <a class="portfolio-block" href="${portfolio.href}"${linkAttrs(portfolio.href, portfolio)}>
       <span class="block-tag">${portfolio.tag}</span>
       <span class="block-name">${portfolio.name}<span class="block-name-en">${portfolio.nameEn}</span></span>
       <p class="block-blurb">${portfolio.blurb}</p>

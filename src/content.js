@@ -35,14 +35,17 @@ export const site = {
   works: {
     eyebrow: 'Studio',
     title: '作品与影像',
-    intro: '作品集是入口；灵感取材、过程与介绍，让每一件作品从何而来、如何做成，都被看懂。',
+    intro:
+      '作品集是入口——先点进可玩的现场；灵感取材、过程与介绍，让每一件作品从何而来、如何做成，都被看懂。',
     portfolio: {
-      tag: 'Portfolio',
-      name: '作品集',
-      nameEn: 'Full Portfolio',
-      blurb: '精选项目与视觉作品的完整入口。持续更新，从成片到可点击的现场。',
-      href: '#',
-      cta: '打开作品集',
+      tag: 'Featured · Playable',
+      name: '空气陀螺',
+      nameEn: 'Air Top',
+      blurb:
+        '用空中手势抽打虚拟陀螺：戒指调倾角与款式，手杖抽打与点地。木质 / 金属 / 霓虹 / 琉璃四款，转速、倾角与音效一体。手机触控也能玩——点进去，就是现场。',
+      href: './air-top/',
+      cta: '立即体验',
+      external: true,
     },
     series: [
       {
@@ -51,17 +54,17 @@ export const site = {
         name: '制作过程',
         nameEn: 'Behind the Make',
         blurb: '从构思、选材到成片——公开审美决策与动手现场。',
-        href: '#',
+        href: '#process',
         cta: '看过程',
         items: [
           {
-            title: '一套 Look 是怎么定下来的',
-            note: '从 moodboard 到上身试色',
+            title: '空气陀螺：物理与四款皮肤怎么定',
+            note: '待更新 · 摩擦、惯量与倒下阈值',
             href: '#',
           },
           {
-            title: '拍摄日：灯光、节奏与取舍',
-            note: '成片背后的现场记录',
+            title: '戒指 / 手杖手势怎么接到陀螺上',
+            note: '待更新 · 倾角、抽打与点地',
             href: '#',
           },
         ],
@@ -72,17 +75,18 @@ export const site = {
         name: '作品介绍',
         nameEn: 'The Piece Itself',
         blurb: '用短片讲清楚一件作品：灵感、结构、以及为什么这样呈现。',
-        href: '#',
+        href: '#intro',
         cta: '看介绍',
         items: [
           {
-            title: '新作发布：本季视觉主题',
-            note: '成片导览与灵感来源',
-            href: '#',
+            title: '空气陀螺：一分钟看懂怎么玩',
+            note: '待更新 · 触控兜底与可穿戴输入',
+            href: './air-top/',
+            external: true,
           },
           {
-            title: '为什么选择这组材质与配色',
-            note: '审美逻辑拆解',
+            title: '为什么是「抽打」而不是按钮连点',
+            note: '待更新 · 手势语感与身体感',
             href: '#',
           },
         ],
@@ -93,17 +97,17 @@ export const site = {
         name: '灵感取材',
         nameEn: 'Caught Anywhere',
         blurb: '随地取大小材——街头、物件、材质与瞬间，收成作品的起点。',
-        href: '#',
+        href: '#source',
         cta: '看取材',
         items: [
           {
-            title: '地铁扶手上的磨损铬色',
-            note: '金属氧化 → 下一季配饰色板',
+            title: '木质陀螺的磨损边缘',
+            note: '待更新 · 摩擦声 → 木质款衰减曲线',
             href: '#',
           },
           {
-            title: '便利店冷柜的雾面玻璃',
-            note: '凝结水珠 → 半透明层叠质感',
+            title: '霓虹灯管的冷绿残影',
+            note: '待更新 · 夜色 → 霓虹款色板',
             href: '#',
           },
           {
