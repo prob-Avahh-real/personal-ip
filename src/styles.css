@@ -1,15 +1,15 @@
 /* ============================================================
-   Avah Personal IP — bottle forest + lacquer red
-   Understated luxury: lifted emerald/jade-ink ground, restrained oxblood type
+   Avah Personal IP — peacock green + lacquer red
+   Understated luxury: deep teal-peacock ground, restrained oxblood type
    ============================================================ */
 
 :root {
-  /* Forest / muted jade-ink greens (ground) — modest further lift, still bottle-dark */
-  --ink-950: #0c1b16;
-  --ink-900: #142a21;
-  --ink-800: #1e362c;
-  --ink-700: #2a473a;
-  --ink-600: #3a5c4c;
+  /* 孔雀绿 / peacock teal-emerald (ground) — vivid blue-green, still bottle-dark */
+  --ink-950: #071916;
+  --ink-900: #0c2a26;
+  --ink-800: #143d38;
+  --ink-700: #1c524a;
+  --ink-600: #28665c;
   /* Soft dusty rose–lacquer (type) — not Christmas red */
   --porcelain: #d6a8ab;
   --porcelain-soft: #e2bcbe;
@@ -18,7 +18,7 @@
   --champagne: #9e444e;
   --champagne-bright: #c05a64;
   --champagne-deep: #6e2c34;
-  --ink: #0f2019;
+  --ink: #0a221e;
   --text: var(--porcelain);
   --text-muted: var(--porcelain-muted);
   --accent: var(--champagne);
@@ -278,9 +278,9 @@ p {
   align-items: end;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 70% 55% at 72% 28%, #264840 0%, transparent 58%),
-    radial-gradient(ellipse 48% 42% at 10% 88%, #29352e 0%, transparent 52%),
-    linear-gradient(165deg, #0c1b16 0%, var(--ink-900) 46%, #0a1712 100%);
+    radial-gradient(ellipse 70% 55% at 72% 28%, #1f5c54 0%, transparent 58%),
+    radial-gradient(ellipse 48% 42% at 10% 88%, #163832 0%, transparent 52%),
+    linear-gradient(165deg, #071916 0%, var(--ink-900) 46%, #061614 100%);
 }
 
 .hero-visual {
@@ -729,7 +729,7 @@ p {
 
 .pillars {
   background:
-    radial-gradient(ellipse 55% 45% at 100% 0%, #2c4236 0%, transparent 55%),
+    radial-gradient(ellipse 55% 45% at 100% 0%, #245a52 0%, transparent 55%),
     var(--ink-900);
 }
 
@@ -787,7 +787,7 @@ p {
 /* Contact */
 
 .contact {
-  background: linear-gradient(180deg, var(--ink-950) 0%, #0a1712 100%);
+  background: linear-gradient(180deg, var(--ink-950) 0%, #061614 100%);
 }
 
 .contact-body {

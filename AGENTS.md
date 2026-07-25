@@ -27,7 +27,7 @@ npm run preview
 
 - **文案入口**：`src/content.js`
 - **结构**：单页多 section（hero → about → works → pillars → contact）
-- **视觉**：深绿瓶底 + 漆红/石榴红字；勿改成紫渐变 / 奶油衬线 / 报纸排版等 AI 默认风
+- **视觉**：孔雀绿底（teal-emerald / peacock）+ 漆红/石榴红字；勿改成紫渐变 / 奶油衬线 / 报纸排版等 AI 默认风
 - **设计**：首屏品牌优先、全幅视觉、无卡片堆砌、无 hero 浮层徽章
 - 除非用户明确要求，不要擅自 `git commit`
 
