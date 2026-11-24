@@ -3,3 +3,21 @@ dist/
 .DS_Store
 *.local
 .vite/
+# Publish hygiene & bloat exclusions
+.env
+.env.*
+!.env.example
+.npm-cache/
+.build/
+DerivedData/
+.gradle/
+android/app/build/
+android/.gradle/
+android/local.properties
+ios/App/Pods/
+__pycache__/
+.venv/
+coverage/
+*.apk
+*.aab
+*.ipa
